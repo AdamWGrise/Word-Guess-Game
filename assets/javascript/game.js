@@ -1,4 +1,4 @@
-// these are always the set of available solutions, available globally
+// Available puzzles
 var solutions = ["jigsaw", "tablesaw", "powerdrill", "hammer", "screwdriver", "sandpaper"]
 
 var letters = "abcdefghijklmnopqrstuvwxyz";
@@ -9,31 +9,31 @@ var letters = "abcdefghijklmnopqrstuvwxyz";
 // this just needs to be reset at the start of each round
 var guessesLeft, guessedLetters, currentSolutionWord, currentSolutionArray;
 
+var guessedLetters = "asdf";
+
 /********* GAME SETUP ***********/
 var setup = function () {
     currentSolutionWord = solutions[Math.floor(Math.random() * solutions.length)];
     guessesLeft = currentSolutionWord.length + 2;
     currentSolutionArray = currentSolutionWord.split("");
     console.log("currentSolutionWord: " + currentSolutionWord + " | currentSolutionArray: " + currentSolutionArray)
-    guessedLetters = []
-}
+    guessedLetters = ["asdf"]
+};
 
-// this should be running only once the round has started
+/********** GAME FUNCTIONS ***********/
 document.onkeyup = function (event) {
     var letter = event.key.toLowerCase();
-    if (letters.indexOf(letter) > -1) {
-        alert("Pick a letter!")
-    } else if (letter === "already guessed") {
+
+    if (guessedLetters.indexOf(letter) > -1) {
         alert("You've already guessed the letter " + letter + "!")
-    } else if (letter === "match") {
-        // do something good
-    } else if (letter === "no match") {
-        // do something bad
+    } else if (letter === "part of the array that matches the word") {
+        // Matching letter - do good stuff
+    } else if (letters.indexOf(letter) > -1) {
+        // Non-matching letter - do bad stuff
     }
 };
 
-
-// on page load, run script
+// Run on page load
 document.onload = function () {
     setup();
 };
