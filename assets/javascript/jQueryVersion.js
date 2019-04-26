@@ -1,64 +1,130 @@
-var possibleSolutions = ["tablesaw","powerdrill","jigsaw","bandsaw"];
+var possibleSolutions = ["tablesaw", "powerdrill", "jigsaw", "bandsaw"];
 var roundSolution = [];
 var roundSolutionBlanks = [];
-var guess = null;
+var guessLetter;
 var guessIs = null;
+var win = 0;
+var guessLog = [];
+var totalTurns = null;
+var turnsLeft = null;
+
+var freshRound = function () {
+    roundSolution = [];
+    roundSolutionBlanks = [];
+    guessLetter = null;
+    guessIs = null;
+    guessLog = [];
+    totalTurns = null;
+    turnsLeft = null;
+}
 
 // Just runs at the beginning of the round
-var getSolution = function(){
-        word = possibleSolutions[Math.floor(Math.random()*possibleSolutions.length)]
-        roundSolution = word.split("");
-    };
+var getSolution = function () {
+    word = possibleSolutions[Math.floor(Math.random() * possibleSolutions.length)]
+    roundSolution = word.split("");
+    console.log("Round solution chosen: " + roundSolution + " (" + roundSolution.length + " letters)")
+};
 
-// Just runs at the beginning of the round
-var genBlanks = function(){
-    for (i = 0 ; i < roundSolution.length ; i++ ) {
+var genBlanks = function () {
+    for (i = 0; i < roundSolution.length; i++) {
         roundSolutionBlanks.push("_");
     }
 }
 
 // This needs to run for each guess the user makes
-var guessMatch = function() { 
-    if (roundSolution.includes(guess)) {
-        guessIs = true;
+
+var guessDupeNLog = function () {
+    console.log("Guessed letter: " + guessLetter);
+    if (guessLog.includes(guessLetter)) {
+        alert("YOU CLOWN, YOU ALREADY GUESSED THAT LETTER");
     } else {
-        guessIs = false
+        guessLog.push(guessLetter);
     }
+    console.log("Guess Log: " + guessLog);
 }
 
-var reveal = function() {
-    if (guessIs === true) {
-        for (i = 0 ; i < roundSolution.length ; i++) {
-            if (guess === roundSolution[i]) {
-                console.log(roundSolutionBlanks);
-                roundSolutionBlanks[i] = guess;
-                console.log(roundSolutionBlanks);
+var guessMatch = function () {
+    if (roundSolution.includes(guessLetter)) {
+        guessIs = 1;
+    } else {
+        guessIs = 0;
+        turnsLeft--;
+    }
+    console.log("Turns left: " + turnsLeft);
+}
+
+var reveal = function () {
+    if (guessIs === 1) {
+        for (i = 0; i < roundSolution.length; i++) {
+            if (guessLetter === roundSolution[i]) {
+                console.log("Before reveal: " + roundSolutionBlanks);
+                roundSolutionBlanks[i] = guessLetter;
+                console.log("After reveal: " + roundSolutionBlanks);
             }
         }
     }
 }
 
+var isWin = function () {
+    if (roundSolutionBlanks.includes("_")) {
+        win = 0;
+    } else {
+        win = 1;
+    }
+}
+
+var youWin = function () {
+    console.log("Win confirmed");
+    win = 0;
+    // do other stuff to reset the game
+    alert("You won! Press OK to restart.");
+    freshRound();
+    runGame();
+}
+
 //////////// Actual stuff -happening- /////////////////
 
-// Page loads and gets a solution chosen
-getSolution();
-genBlanks();
+// New Game
+var runGame = function () {
+    getSolution();
+    genBlanks();
 
-var guess = prompt("Guess a letter!");
-guess = guess.toLowerCase();
+    totalTurns = roundSolution.length;
+    turnsLeft = totalTurns;
 
-guessMatch();
-reveal();
+    console.log("Total turns: " + totalTurns);
 
-// Logging
-console.log("This round's solution: " + roundSolution);
-console.log("Round solution's length: " + roundSolution.length);
-console.log("Round's blank solution: " + roundSolutionBlanks);
-console.log("Round's blanks length: " + roundSolutionBlanks.length);
-console.log("Guess: " + guess + ", " + guessIs);
+    for (i = 0; i < 10; i++) {
+        if (win === 0) {
+            if (turnsLeft === 0) {
+                alert("You lose! Click OK to try again.");
+                freshRound();
+                runGame();
+                break;
+            } else {
+                guessLetter = prompt("Guess a letter!");
+                guessLetter = guessLetter.toLowerCase();
+                guessDupeNLog();
+                guessMatch();
+                reveal();
+                isWin();
+            }
+        } else {
+            youWin();
+            break;
+        };
+        // Logging
+        console.log("Guess: " + guessLetter + ", " + guessIs);
+        console.log("Win? " + win);
+    }
+}
+
+// Page loads & runs game
+
+runGame();
 
 /********* to do
 
-need to add a condition for when the guess has already been made
+catalog and display guesses
 
 */
