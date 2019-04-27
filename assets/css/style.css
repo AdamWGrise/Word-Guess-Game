@@ -14,3 +14,10 @@ body {
     color:#ccc;
     border-top: 8px solid darkgreen;
 }
+
+#currentGuess {
+    font-size:3rem;
+    text-align: justify;
+    text-align-last: center;
+    resize: none;
+}

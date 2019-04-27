@@ -22,9 +22,11 @@
     <main-content>
         <div class="container">
             <p id="theWord"></p>
-            <p id="currentGuess"></p>
+            <textarea rows="1" cols="3" maxlength="1" id="currentGuess"></textarea><br>
+            <button id="submitGuess" onclick="runGame()">Submit Guess</button>
             <p id="roundGuesses"></p>
             <p id="guessesLeft"></p>
+            <button id="gameSetup" onclick="gameSetup()">Start a New Game!</button>
         </div>
     </main-content>
 
