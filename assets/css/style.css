@@ -1,18 +1,38 @@
 body {
-    background-color:#162016;
     color:#eee;
+    font-family: Oswald, Arial, serif;
+    background-color:black;
+}
+
+.workshop {
+    background-image: url("../images/workshop-bg.png");
+    background-position: center;
+}
+
+.spacer {
+    height:30px;
 }
 
 .ag-footer {
     position: absolute;
     bottom: 0;
-    width: 100%;
     height: 30px;
     line-height:20px;
     background-color: #222;
     text-align:center;
     color:#ccc;
-    border-top: 8px solid darkgreen;
+    border-top: 8px solid green;
+}
+
+.commentary {
+    text-align:center;
+    color:#ccc;
+    background-color:black;
+    opacity:0.75;
+    margin:20px 10px auto 10px;
+    height: 82px;
+    padding: 5px;
+    font-size: 1.25rem;
 }
 
 #currentGuess {
@@ -20,4 +40,39 @@ body {
     text-align: justify;
     text-align-last: center;
     resize: none;
+    background-color:white;
+    color:#221;
+    opacity:0.5;
+    border:black 3px solid;
+    margin: 20px 15px 5px 15px;
+}
+
+#theWord {
+    font-size: 2rem;
+    letter-spacing: 1rem;
+    background-color:black;
+    opacity: 0.75;
+    border: lightgreen 2px solid;
+    text-align:center;
+    padding-left:15px;
+    font-family:"Courier New", Courier, monospace;
+}
+
+#roundGuesses {
+    background-color:#1c140c;
+    opacity:0.75;
+    border:lightgreen 2px solid;
+    height: 2.25rem;
+    padding-left:5px;
+    text-align:center;
+}
+
+#guessesLeft {
+    font-size: 3rem;
+    border:lightgreen 2px solid;
+    height: 3.75rem;
+    padding-left:5px;
+    text-align:center;
+    background-color:black;
+    opacity:0.75;
 }

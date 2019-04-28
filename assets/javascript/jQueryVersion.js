@@ -1,4 +1,6 @@
-var possibleSolutions = ["tablesaw", "powerdrill", "jigsaw", "bandsaw"];
+var possibleSolutions = ["tablesaw", "powerdrill", "jigsaw", "bandsaw","hammer","tapemeasure","chisel","screwdriver","caliper","clamp","sawhorse","workbench","grinder","palmsander","router","drillpress","goggles","earplugs","jointer","planer","facemask","pliers"];
+var goodComments = ['Nice one!','Was that a lucky guess, or have you already figured it out?','Good guess!','Something tells me you have done this before.','Awesome!','Sweet.','Tubular, bro!','Ride it like a wave.',"That's right!",'Excellent work!'];
+var badComments = ['Nope.','Not even close.','Try another letter.','Yeah, definitely not that letter.','Why would you even try that letter? Come on.','Not this time, champ.','Try again, sport.','The eight ball says, "WRONG." Sorry.']
 var roundSolution = [];
 var roundSolutionBlanks = [];
 var guessCorrect = null;
@@ -16,6 +18,7 @@ var freshRound = function () {
     guessCorrect = null;
     guessesLog.length = 0;
     turnsLeft = null;
+    $(".commentary").text("Enter a letter into the box on the left, then click on the 'Submit Guess' button to get started!");
 }
 
 var getSolution = function () {
@@ -29,7 +32,7 @@ var genBlanks = function () {
     for (i = 0; i < roundSolution.length; i++) {
         roundSolutionBlanks.push("_");
     }
-    $("#theWord").text(roundSolutionBlanks);
+    $("#theWord").text(roundSolutionBlanks.join(""));
 }
 
 //// FUNCTIONS FOR EACH USER GUESS
@@ -37,11 +40,12 @@ var genBlanks = function () {
 var guessDupeNLog = function () {
     console.log("Guessed letter: " + guessLetter);
     if (guessesLog.includes(guessLetter)) {
-        alert("YOU CLOWN, YOU ALREADY GUESSED THAT LETTER");
+        $(".commentary").text("Hold up there, chief. You already guessed that letter!");
         guessDupe = 1;
     } else {
         guessesLog.push(guessLetter);
         guessDupe = 0;
+        $("#roundGuesses").text(guessesLog.join(" "));
     }
     console.log("Guess Log: " + guessesLog);
 }
@@ -52,8 +56,10 @@ var guessMatch = function () {
     } else {
         guessCorrect = 0;
         turnsLeft--;
+        $("#guessesLeft").text(turnsLeft.toString());
+        var badCommentPick = Math.floor(Math.random()*badComments.length);
+        $(".commentary").text(badComments[badCommentPick]);
     }
-    console.log("Turns left: " + turnsLeft);
 }
 
 var guessRevealOrLose = function () {
@@ -61,16 +67,22 @@ var guessRevealOrLose = function () {
         for (i = 0; i < roundSolution.length; i++) {
             if (guessLetter === roundSolution[i]) {
                 roundSolutionBlanks[i] = guessLetter;
-                console.log("After reveal: " + roundSolutionBlanks);
+                $("#theWord").text(roundSolutionBlanks.join(""));
             }
         }
-    } else if (guessCorrect === 1 && turnsLeft === 0) {
-        document.getElementById("submitGuess").disabled = true;
-        alert("You lose! Bummer.");
-        // Disable the submit button, only allow new game to start.
+        var goodCommentPick = Math.floor(Math.random()*goodComments.length);
+        $(".commentary").text(goodComments[goodCommentPick]);
+    } else if (guessCorrect === 0 && turnsLeft === 0) {
+        $("#guessesLeft").text(turnsLeft.toString());
+        $("#submitGuess").prop("disabled",true);
+        $(".commentary").text("Shucks, pardner. Ya lost this round. Hit 'Start a New Game' to take another shot.");
     } else {
         // No action
     }
+}
+
+var eraseText = function () {
+    document.getElementById("currentGuess").value = "";
 }
 
 //// WIN CHECK
@@ -86,11 +98,10 @@ var guessIsWin = function () {
 //// USER WINS
 
 var youWin = function () {
-    console.log("Win confirmed");
     win = 0;
     // Replace this alert, don't restart round until a restart button is pushed
-    document.getElementById("submitGuess").disabled = true;
-    alert("You won! Push the Start a New Game button to begin a new round.");
+    $("#submitGuess").prop("disabled",true); 
+    $(".commentary").text("Yeah! You win! Hit the 'Start a New Game' button to play again.");
     // Disable the submit button until new round starts
 }
 
@@ -102,40 +113,31 @@ var gameSetup = function () {
     freshRound();
     getSolution();
     genBlanks();
-    turnsLeft = roundSolution.length;
-    document.getElementById("submitGuess").disabled = false; 
+    turnsLeft = 6; // Sorry, not drawing a head, body, two arms, two legs :(
+    $("#submitGuess").prop("disabled",false); 
+    $("#theWord").text(roundSolutionBlanks.join(""));
+    $("#guessesLeft").text(turnsLeft.toString());
+    $("#roundGuesses").text(guessesLog.join(" "));
+    $
 }
 
-// Control for the text field - only allow letters
+// Control for the text field - only allow letters (no symbols or numbers)
 document.getElementById("currentGuess").onkeyup = function (event) {
     this.value = this.value.replace(/[^a-zA-Z]/gi, '');
 }
 
-// Functions for each guess submitted
-
+// Functions for each guess submitted - main cycle
 var runGame = function () {
     guessLetter = document.getElementById('currentGuess').value;
     guessLetter = guessLetter.toUpperCase();
     guessDupeNLog();
-    guessMatch();
-    guessRevealOrLose();
-    $("#theWord").text(roundSolutionBlanks);
-    guessIsWin();
+    if(guessDupe === 0) {
+        guessMatch();
+        guessRevealOrLose();
+        eraseText();
+        guessIsWin();
+    }
 }
 
-// Elements to show on-screen
-
-
 // Page loads & runs game
-
 gameSetup();
-
-/********* to do
-
-catalog and display guesses fancily
-show turns left
-clear text box on guess
-stop decrementing remaining turns on duplicate guess
-interrupt runGame if duplicate guess
-
-*/

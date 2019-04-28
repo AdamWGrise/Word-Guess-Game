@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Reset & Bootstrap -->
+    <!-- Reset & Bootstrap -->
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!-- Local CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <!-- Font selection -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Radley" rel="stylesheet">
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Workshop Hangman</title>
+    <title>Guess the Word!</title>
 </head>
-<body>
 
-    <header>
-        <div class="container">
-            <h1>Hangman! Theme: Workshop</h1>
-        </div>
-    </header>
+<body class="workshop">
 
-    <main-content>
-        <div class="container">
-            <p id="theWord"></p>
-            <textarea rows="1" cols="3" maxlength="1" id="currentGuess"></textarea><br>
-            <button id="submitGuess" onclick="runGame()">Submit Guess</button>
-            <p id="roundGuesses"></p>
-            <p id="guessesLeft"></p>
-            <button id="gameSetup" onclick="gameSetup()">Start a New Game!</button>
+    <div class="spacer"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <main-content>
+                    <h1>Guess the Word</h1>
+                    <h2>Theme: "The Workshop"</h2><br>
+                    <div id="theWord"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <textarea rows="1" cols="3" maxlength="1" id="currentGuess"></textarea>
+                        </div>
+                        <div class="col-md-9">
+                            <h3 class="commentary"></h3>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="submitGuess" onclick="runGame()">Submit Guess</button><br><br>
+                    <button type="button" class="btn btn-secondary" id="gameSetup" onclick="gameSetup()">Start a New Game!</button>
+            </div>
+            <div class="col-lg-6">
+                <h4>Guesses made so far:</h4>
+                <h3 id="roundGuesses"></h3>
+                <h4>Number of tries left:</h4>
+                <h4 id="guessesLeft"></h4>
+            </div>
+            </main-content>
         </div>
-    </main-content>
+    </div>
 
-    <footer class="ag-footer">
-        <div class="container">
-            <span class="text-muted">Copyright 2019 Adam Grise</span>
-        </div>
-    </footer>
+    <!-- Local JavaScript -->
+    <script src="assets/javascript/jQueryVersion.js"></script>
 </body>
-<script src="assets/javascript/jQueryVersion.js"></script>
+
 </html>
